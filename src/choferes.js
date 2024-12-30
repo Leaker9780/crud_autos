@@ -87,7 +87,7 @@ function Choferes() {
     <>
     <Container>
           <br />
-          <Button color='success' onClick={mostrarModalInsertarChofer}>Insertar Chofer</Button>
+          <Button color='success' onClick={mostrarModalInsertarChofer}>Insertar un Chofer</Button>
           <br />
           <Table>
             <thead>

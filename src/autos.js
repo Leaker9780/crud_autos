@@ -84,7 +84,7 @@ const handleDeleteAutos = async (id) => {
     <>
      <Container>
       <br/>
-        <Button  color='success' onClick={mostrarModalInsertarAuto}>Insertar Auto</Button>
+        <Button  color='success' onClick={mostrarModalInsertarAuto}>Insertar un Auto</Button>
       <br/>
       <Table>
         <thead>
