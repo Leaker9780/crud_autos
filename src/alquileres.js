@@ -44,21 +44,21 @@ function Alquileres() {
             <Table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Auto</th>
-                        <th>Chofer</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Auto</th>
+                    <th>Chofer</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
                     {alquileres.map((alquiler) => (
                         <tr key={alquiler.id}>
-                            <td>{alquiler.id}</td>
-                            <td>{autos.find(auto => auto.id === alquiler.idAuto)?.modelo || 'Desconocido'}</td>
-                            <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.nombre || 'Desconocido'}</td>
                             <td>{alquiler.fechaInicio}</td>
                             <td>{alquiler.fechaFin || 'Activo'}</td>
+                            <td>{autos.find(auto => auto.id === alquiler.idAuto)?.placa || 'Desconocido'}</td>
+                            <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.Nombre || 'Desconocido'}</td>
+                      
                         </tr>
                     ))}
                 </tbody>
@@ -77,7 +77,7 @@ function Alquileres() {
                         >
                             <option value="">Seleccionar</option>
                             {autos.map((auto) => (
-                                <option key={auto.id} value={auto.id}>{auto.modelo}</option>
+                                <option key={auto.id} value={auto.id}>{auto.placa}-{auto.marca}</option>
                             ))}
                         </Input>
                     </FormGroup>
@@ -90,7 +90,7 @@ function Alquileres() {
                         >
                             <option value="">Seleccionar</option>
                             {choferes.map((chofer) => (
-                                <option key={chofer.id} value={chofer.id}>{chofer.nombre}</option>
+                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
                             ))}
                         </Input>
                     </FormGroup>

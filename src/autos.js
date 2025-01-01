@@ -7,7 +7,7 @@ import './App.css';
 
 function Autos() {
 const [autos, setAutos] = useState([]);
-const [newAuto, setNewAuto] = useState({ placa: '', marca: '', kilometraje: '', mantenimiento: '', comentarios: ''});
+const [newAuto, setNewAuto] = useState({ placa: '', marca: '', modelo: '', kilometraje: '', mantenimiento: '', comentarios: ''});
 const [editAuto, setEditAuto] = useState(null);
 
 
@@ -63,13 +63,13 @@ const mostrarModalEditarAuto = (Registro) => {
 
 const handleAddAutos = async() => {
     await addAuto(newAuto);
-    setNewAuto({placa: '', marca: '', kilometraje: '', mantenimiento: '', comentarios: ''})
+    setNewAuto({placa: '', marca: '', modelo: '', kilometraje: '', mantenimiento: '', comentarios: ''})
     ocultarModalInsertarAuto();
 }
 
 const handleUpdateAutos = async() => {
   if (editAuto) {
-    await updateAutos(editAuto.id, {placa: editAuto.placa, marca: editAuto.marca, kilometraje: editAuto.kilometraje, mantenimiento: editAuto.mantenimiento, comentarios: editAuto.comentarios})
+    await updateAutos(editAuto.id, {placa: editAuto.placa, marca: editAuto.marca, modelo: editAuto.modelo , kilometraje: editAuto.kilometraje, mantenimiento: editAuto.mantenimiento, comentarios: editAuto.comentarios})
     setEditAuto(null);
     ocultarModalEditarAuto();
   }
@@ -92,6 +92,7 @@ const handleDeleteAutos = async (id) => {
             <th>Id</th>
             <th>Placa</th>
             <th>Marca</th>
+            <th>Modelo</th>
             <th>Kilometraje</th>
             <th>Mantenimiento</th>
             <th>Comentarios</th>
@@ -103,6 +104,7 @@ const handleDeleteAutos = async (id) => {
               <td>{elemento.id}</td>
               <td>{elemento.placa}</td>
               <td>{elemento.marca}</td>
+              <td>{elemento.modelo}</td>
               <td>{elemento.kilometraje}</td>
               <td>{elemento.mantenimiento}</td>
               <td>{elemento.comentarios}</td>
@@ -154,6 +156,18 @@ const handleDeleteAutos = async (id) => {
                 onChange={handleChange}
               />
             </FormGroup>
+
+            <FormGroup>
+              <label>Modelo:</label>
+              <Input
+                className="form-control"
+                name="modelo"
+                type="text"
+                value={editAuto?.modelo || ''}
+                onChange={handleChange}
+              />
+            </FormGroup>
+
 
             <FormGroup>
               <label>Kilometraje:</label>
@@ -226,6 +240,17 @@ const handleDeleteAutos = async (id) => {
                 className="form-control"
                 name="marca"
                 type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <label>Modelo:</label>
+              <Input
+                className="form-control"
+                name="modelo"
+                type="text"
+                value={editAuto?.modelo || ''}
                 onChange={handleChange}
               />
             </FormGroup>
