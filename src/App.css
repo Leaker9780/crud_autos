@@ -13,6 +13,61 @@
   }
 }
 
+
+
+/* App.css */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-brand {
+  color: #ffffff;
+}
+
+.navbar-dark .nav-link {
+  color: #ffffff;
+}
+
+.btn-toggle-dark-mode {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.btn-toggle-dark-mode:hover {
+  text-decoration: underline;
+}
+
+body.dark-mode .table th, body.dark-mode .table td {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.light-mode .table th, body.light-mode .table td {
+  background-color: #f8f9fa;
+  color: #000000;
+}
+
+
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

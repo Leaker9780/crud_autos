@@ -9,7 +9,7 @@ import './App.css';
 function Choferes() {
 
   const [choferes, setChoferes] = useState([]);
-  const [newChofer, setNewChofer] = useState({ DNI: '', Nombre: '', telefono: '', direccion: '', razon_social: '', carnet_conducir: '' });
+  const [newChofer, setNewChofer] = useState({ DNI: '', Nombre: '', telefono: '', direccion: '', razon_social: '', carnet_conducir: '', comentario: '' });
   const [editChofer, setEditChofer] = useState(null);
 
   const [modalInsertarChofer, setModalInsertarChofer] = useState(false);
@@ -64,14 +64,14 @@ function Choferes() {
 
   const handleAddChoferes = async () => {
     await addChofer(newChofer);
-    setNewChofer({ DNI: '', Nombre: '', telefono: '', direccion: '', razon_social: '', carnet_conducir: '' })
+    setNewChofer({ DNI: '', Nombre: '', telefono: '', direccion: '', razon_social: '', carnet_conducir: '', comentario: ''})
     setModalInsertarChofer(false);
   }
 
 
   const handleUpdateChoferes = async () => {
     if (editChofer) {
-      await updateChoferes(editChofer.id, { DNI: editChofer.DNI, Nombre: editChofer.Nombre, telefono: editChofer.telefono, direccion: editChofer.direccion, razon_social: editChofer.razon_social, carnet_conducir: editChofer.carnet_conducir })
+      await updateChoferes(editChofer.id, { DNI: editChofer.DNI, Nombre: editChofer.Nombre, telefono: editChofer.telefono, direccion: editChofer.direccion, razon_social: editChofer.razon_social, carnet_conducir: editChofer.carnet_conducir, comentario: editChofer.comentario })
       setEditChofer(null);
       setModalEditarChofer(false);
     }
@@ -92,23 +92,25 @@ function Choferes() {
           <Table>
             <thead>
               <tr>
-                <th>Id</th>
                 <th>DNI</th>
                 <th>Nombre</th>
                 <th>Telefono</th>
+                <th>Direccion</th>
                 <th>Razon social</th>
                 <th>Carnet de conducir</th>
+                <th>Comentario</th>
               </tr>
             </thead>
             <tbody>
               {choferes.map((elemento) => (
                 <tr key={elemento.id}>
-                  <td>{elemento.id}</td>
                   <td>{elemento.DNI}</td>
                   <td>{elemento.Nombre}</td>
                   <td>{elemento.telefono}</td>
+                  <td>{elemento.direccion}</td>
                   <td>{elemento.razon_social}</td>
                   <td>{elemento.carnet_conducir}</td>
+                  <th>{elemento.comentario}</th>
                   <td>
                     <Button color='primary' onClick={() => mostrarModalEditarChofer(elemento)}>Editar</Button>
                     <Button color="danger" onClick={() => handleDeleteChoferes(elemento.id)}>Eliminar</Button>
@@ -167,6 +169,16 @@ function Choferes() {
             </FormGroup>
 
             <FormGroup>
+              <label>Direccion:</label>
+              <Input
+                className="form-control"
+                name="direccion"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <label>Razon social:</label>
               <Input
                 className="form-control"
@@ -185,6 +197,17 @@ function Choferes() {
                 onChange={handleChange}
               />
             </FormGroup>
+
+            <FormGroup>
+              <label>Comentario:</label>
+              <Input
+                className="form-control"
+                name="comentario"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+
           </ModalBody>
 
           <ModalFooter>
@@ -242,6 +265,17 @@ function Choferes() {
             </FormGroup>
 
             <FormGroup>
+              <label>Direccion:</label>
+              <Input
+                className="form-control"
+                name="direccion"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+
+
+            <FormGroup>
               <label>Razon social:</label>
               <Input
                 className="form-control"
@@ -259,6 +293,16 @@ function Choferes() {
                 name="carnet_conducir"
                 type="text"
                 value={editChofer?.carnet_conducir || ''}
+                onChange={handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <label>Comentario:</label>
+              <Input
+                className="form-control"
+                name="comentario"
+                type="text"
                 onChange={handleChange}
               />
             </FormGroup>

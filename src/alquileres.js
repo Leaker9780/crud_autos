@@ -14,6 +14,9 @@ function Alquileres() {
         idChofer: '',
         fechaInicio: '',
         fechaFin: '',
+        importe: '',
+        garantia: '',
+        estado: '',
     });
 
     useEffect(() => {
@@ -29,7 +32,7 @@ function Alquileres() {
         if (nuevoAlquiler.idAuto && nuevoAlquiler.idChofer && nuevoAlquiler.fechaInicio) {
             await addAlquiler(nuevoAlquiler);
             setModalOpen(false);
-            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '' });
+            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '', importe: '', garantia: '', estado: '' });
         } else {
             alert("Por favor completa todos los campos requeridos.");
         }
@@ -48,7 +51,9 @@ function Alquileres() {
                     <th>Fecha Fin</th>
                     <th>Auto</th>
                     <th>Chofer</th>
-                       
+                    <th>Importe de alquiler</th>
+                    <th>Garantia</th>
+                    <th>Estado</th>   
                     </tr>
                 </thead>
                 <tbody>
@@ -58,7 +63,13 @@ function Alquileres() {
                             <td>{alquiler.fechaFin || 'Activo'}</td>
                             <td>{autos.find(auto => auto.id === alquiler.idAuto)?.placa || 'Desconocido'}</td>
                             <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.Nombre || 'Desconocido'}</td>
-                      
+                            <td>{alquiler.importe}</td> 
+                            <td>{alquiler.garantia}</td>
+                            <td>{alquiler.estado}</td>   
+                            <td>
+                            <Button color='primary' onClick={() => mostrarModalEditarAuto(alquiler)}>Editar</Button>
+                            <Button color="danger" onClick={() => handleDeleteAutos(alquiler.id)}>Eliminar</Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -110,6 +121,25 @@ function Alquileres() {
                             onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, fechaFin: e.target.value })}
                         />
                     </FormGroup>
+
+                    <FormGroup>
+                        <label>Importe de alquiler:</label>
+                        <Input
+                            type="number"
+                            value={nuevoAlquiler.importe}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, importe: e.target.value })}
+                        />
+                    </FormGroup>
+                    
+                    <FormGroup>
+                        <label>Garantia:</label>
+                        <Input
+                            type="number"
+                            value={nuevoAlquiler.garantia}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, garantia: e.target.value })}
+                        />
+                    </FormGroup>
+
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={handleAddAlquiler}>Guardar</Button>

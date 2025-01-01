@@ -89,19 +89,17 @@ const handleDeleteAutos = async (id) => {
       <Table>
         <thead>
           <tr>
-            <th>Id</th>
             <th>Placa</th>
             <th>Marca</th>
             <th>Modelo</th>
             <th>Kilometraje</th>
-            <th>Mantenimiento</th>
+            <th>Fecha ultimo Mantenimiento</th>
             <th>Comentarios</th>
           </tr>
         </thead>
         <tbody>
           {autos.map((elemento) => (
             <tr key={elemento.id}>
-              <td>{elemento.id}</td>
               <td>{elemento.placa}</td>
               <td>{elemento.marca}</td>
               <td>{elemento.modelo}</td>
