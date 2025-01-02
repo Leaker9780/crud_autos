@@ -9,6 +9,7 @@ import './App.css';
 import Autos from './autos';
 import Choferes from './choferes';
 import Alquileres from './alquileres';
+import Pagos from './pagos';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -50,6 +51,7 @@ function App() {
         <Route path="/autos" element={<Autos />} />
         <Route path="/choferes" element={<Choferes />} />
         <Route path="/alquileres" element={<Alquileres />} />
+        <Route path="/pagos" element={<Pagos />} />
       </Routes>
     </Router>
   );

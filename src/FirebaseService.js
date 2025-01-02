@@ -5,6 +5,8 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot } fr
 const collectionRefA = collection(firestore, "autos");
 const collectionRefC = collection(firestore, "choferes");
 const collectionRefAlquileres = collection(firestore, "alquileres");
+const collectionRefPagos = collection(firestore, "pagos");
+
 
 // Métodos para autos
 export const addAuto = async (auto) => {
@@ -25,6 +27,14 @@ export const deleteAutos = async (id) => {
     const autoDoc = doc(firestore, 'autos', id);
     return await deleteDoc(autoDoc);
 };
+export const subscribeToAutos = (callback) => {
+    return onSnapshot(collectionRefA, (snapshot) => {
+        const autos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        callback(autos);
+    });
+};
+
+
 
 // Métodos para choferes
 export const addChofer = async (chofer) => {
@@ -46,20 +56,15 @@ export const deleteChoferes = async (id) => {
     return await deleteDoc(choferDoc);
 };
 
-// Escuchar cambios en tiempo real
-export const subscribeToAutos = (callback) => {
-    return onSnapshot(collectionRefA, (snapshot) => {
-        const autos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        callback(autos);
-    });
-};
-
 export const subscribeToChoferes = (callback) => {
     return onSnapshot(collectionRefC, (snapshot) => {
         const choferes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         callback(choferes);
     });
 };
+
+
+
 
 // Métodos para alquileres
 export const addAlquiler = async (alquiler) => {
@@ -85,5 +90,33 @@ export const subscribeToAlquileres = (callback) => {
     return onSnapshot(collectionRefAlquileres, (snapshot) => {
         const alquileres = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         callback(alquileres);
+    });
+};
+
+
+//Métodos para pagos
+export const addPagos = async (pago) => {
+    return await addDoc(collectionRefPagos, pago);
+};
+
+export const getAllPagos = async () => {
+    const snapshot = await getDocs(collectionRefPagos);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+export const updatePagos = async (id, updatedPago) => {
+    const pagoDoc = doc(firestore, 'pagos', id);
+    return await updateDoc(pagoDoc, updatedPago);
+};
+
+export const deletePagos = async (id) => {
+    const pagoDoc = doc(firestore, 'pagos', id);
+    return await deleteDoc(pagoDoc);
+};
+
+export const subscribeToPagos = (callback) => {
+    return onSnapshot(collectionRefPagos, (snapshot) => {
+        const pagos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        callback(pagos);
     });
 };
