@@ -179,11 +179,11 @@ const handleDeleteAutos = async (id) => {
             </FormGroup>
 
             <FormGroup>
-              <label>Mantenimiento:</label>
+              <label>Fecha ultimo Mantenimiento:</label>
               <Input
                 className="form-control"
                 name="mantenimiento"
-                type="text"
+                type="date"
                 value={editAuto?.mantenimiento || ''}
                 onChange={handleChange}
               />
@@ -264,11 +264,11 @@ const handleDeleteAutos = async (id) => {
             </FormGroup>
 
             <FormGroup>
-              <label>Mantenimiento:</label>
+              <label>Fecha ultimo Mantenimiento:</label>
               <Input
                 className="form-control"
                 name="mantenimiento"
-                type="text"
+                type="date"
                 onChange={handleChange}
               />
             </FormGroup>

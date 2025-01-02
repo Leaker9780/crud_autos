@@ -93,7 +93,7 @@ function Choferes() {
             <thead>
               <tr>
                 <th>DNI</th>
-                <th>Nombre</th>
+                <th>Nombre completo</th>
                 <th>Telefono</th>
                 <th>Direccion</th>
                 <th>Razon social</th>

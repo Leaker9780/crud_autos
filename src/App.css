@@ -15,7 +15,6 @@
 
 
 
-/* App.css */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -58,15 +57,25 @@ body.light-mode .table th, body.light-mode .table td {
 
 
 
-.light-mode {
-  background-color: #ffffff;
-  color: #000000;
+/* Estilos globales para el modo oscuro */
+.dark-mode .modal-content {
+  background-color: #343a40; /* Fondo oscuro */
+  color: #f8f9fa; /* Texto claro */
 }
 
-.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
+.dark-mode .modal-header,
+.dark-mode .modal-footer {
+  border-color: #495057; /* Bordes oscuros */
 }
+
+
+.dark-mode .btn-primary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+
+
 
 .App-header {
   background-color: #282c34;

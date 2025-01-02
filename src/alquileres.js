@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { addAlquiler, getAllAlquileres, subscribeToAlquileres } from './FirebaseService';
+import { addAlquiler, getAllAlquileres, subscribeToAlquileres, updateAlquiler, deleteAlquiler } from './FirebaseService';
 import { getAllAutos } from './FirebaseService';
 import { getAllChoferes } from './FirebaseService';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Container } from "reactstrap";
@@ -8,7 +8,12 @@ function Alquileres() {
     const [alquileres, setAlquileres] = useState([]);
     const [autos, setAutos] = useState([]);
     const [choferes, setChoferes] = useState([]);
+
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalInsertarAlquiler, setModalInsertarAlquiler] = useState(false);
+    const [modalEditarAlquiler, setModalEditarAlquiler] = useState(false);
+  
+
     const [nuevoAlquiler, setNuevoAlquiler] = useState({
         idAuto: '',
         idChofer: '',
@@ -37,6 +42,10 @@ function Alquileres() {
             alert("Por favor completa todos los campos requeridos.");
         }
     };
+
+    const handleDeleteAlquiler = async (id) => {
+        await deleteAlquiler(id);
+      };
 
     return (
         <div>
@@ -68,7 +77,7 @@ function Alquileres() {
                             <td>{alquiler.estado}</td>   
                             <td>
                             <Button color='primary' onClick={() => mostrarModalEditarAuto(alquiler)}>Editar</Button>
-                            <Button color="danger" onClick={() => handleDeleteAutos(alquiler.id)}>Eliminar</Button>
+                            <Button color="danger" onClick={() => handleDeleteAlquiler(alquiler.id)}>Eliminar</Button>
                             </td>
                         </tr>
                     ))}
