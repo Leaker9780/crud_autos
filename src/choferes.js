@@ -126,7 +126,7 @@ function Choferes() {
 
 
         <Modal isOpen={modalInsertarChofer}>
-          <ModalHeader>
+          <ModalHeader toggle={() => ocultarModalInsertarChofer(!mostrarModalInsertarChofer)}>
             <div>
               <h3>Insertar Chofer</h3>
             </div>
@@ -219,7 +219,7 @@ function Choferes() {
 
 
         <Modal isOpen={modalEditarChofer}>
-          <ModalHeader>
+          <ModalHeader toggle={() => ocultarModalEditarChofer(!mostrarModalEditarChofer)}>
             <div>
               <h3>Editar Chofer</h3>
             </div>

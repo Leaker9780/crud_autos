@@ -10,7 +10,7 @@ function Alquileres() {
     const [choferes, setChoferes] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalInsertarAlquiler, setModalInsertarAlquiler] = useState(false);
+
     const [modalEditarAlquiler, setModalEditarAlquiler] = useState(false);
   
 
@@ -47,6 +47,10 @@ function Alquileres() {
         await deleteAlquiler(id);
       };
 
+    const estadochangue = async () => {
+
+    };
+
     return (
         <div>
           <Container>
@@ -76,7 +80,8 @@ function Alquileres() {
                             <td>{alquiler.garantia}</td>
                             <td>{alquiler.estado}</td>   
                             <td>
-                            <Button color='primary' onClick={() => mostrarModalEditarAuto(alquiler)}>Editar</Button>
+                            <Button color='primary' onClick={() => estadochangue(alquiler)}>Cambiar estado</Button>
+                            <Button color='primary' onClick={() => setModalEditarAlquiler(true)}>Editar</Button>
                             <Button color="danger" onClick={() => handleDeleteAlquiler(alquiler.id)}>Eliminar</Button>
                             </td>
                         </tr>
@@ -149,12 +154,112 @@ function Alquileres() {
                         />
                     </FormGroup>
 
+                    <FormGroup>
+                        <label>Estado:</label>
+                        <Input
+                            type="select"
+                            value={nuevoAlquiler.estado}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, estado: e.target.value })}
+                            >
+                            <option value="">Seleccionar</option>
+                            {choferes.map((chofer) => (
+                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={handleAddAlquiler}>Guardar</Button>
                     <Button color="secondary" onClick={() => setModalOpen(false)}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
+
+
+
+            <Modal isOpen={modalEditarAlquiler} toggle={() => setModalEditarAlquiler(!modalEditarAlquiler)}>
+                <ModalHeader toggle={() => setModalEditarAlquiler(!modalEditarAlquiler)}>Editar Alquiler</ModalHeader>
+                <ModalBody>
+                    <FormGroup>
+                        <label>Auto:</label>
+                        <Input
+                            type="select"
+                            value={nuevoAlquiler.idAuto}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, idAuto: e.target.value })}
+                        >
+                            <option value="">Seleccionar</option>
+                            {autos.map((auto) => (
+                                <option key={auto.id} value={auto.id}>{auto.placa}-{auto.marca}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Chofer:</label>
+                        <Input
+                            type="select"
+                            value={nuevoAlquiler.idChofer}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, idChofer: e.target.value })}
+                        >
+                            <option value="">Seleccionar</option>
+                            {choferes.map((chofer) => (
+                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Fecha de Inicio:</label>
+                        <Input
+                            type="date"
+                            value={nuevoAlquiler.fechaInicio}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, fechaInicio: e.target.value })}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Fecha de Fin:</label>
+                        <Input
+                            type="date"
+                            value={nuevoAlquiler.fechaFin}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, fechaFin: e.target.value })}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <label>Importe de alquiler:</label>
+                        <Input
+                            type="number"
+                            value={nuevoAlquiler.importe}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, importe: e.target.value })}
+                        />
+                    </FormGroup>
+                    
+                    <FormGroup>
+                        <label>Garantia:</label>
+                        <Input
+                            type="number"
+                            value={nuevoAlquiler.garantia}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, garantia: e.target.value })}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <label>Estado:</label>
+                        <Input
+                            type="select"
+                            value={nuevoAlquiler.estado}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, estado: e.target.value })}
+                            >
+                            <option value="">Seleccionar</option>
+                            {choferes.map((chofer) => (
+                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
+                            ))}
+                        </Input>
+                    </FormGroup>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={handleAddAlquiler}>Guardar</Button>
+                    <Button color="secondary" onClick={() => setModalEditarAlquiler(false)}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
         </div>
     );
 }

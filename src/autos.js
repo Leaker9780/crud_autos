@@ -121,7 +121,7 @@ const handleDeleteAutos = async (id) => {
 
 
     <Modal isOpen={modalEditarAuto}>
-          <ModalHeader>
+          <ModalHeader toggle={() => ocultarModalEditarAuto(!mostrarModalEditarAuto)}>
             <div>
               <h3>Editar Auto</h3>
             </div>
@@ -210,7 +210,7 @@ const handleDeleteAutos = async (id) => {
 
 
     <Modal isOpen={modalInsertarAuto}>
-          <ModalHeader>
+          <ModalHeader toggle={() => ocultarModalInsertarAuto(!mostrarModalInsertarAuto)}>
             <div>
               <h3>Insertar Auto</h3>
             </div>
