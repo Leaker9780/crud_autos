@@ -8,6 +8,8 @@ import './App.css';
 
 function Pagos() {
 
+    const [placaFiltro, setPlacaFiltro] = useState('');
+
     const [pagos, setPagos] = useState([]);
     const [alquileres, setAlquileres] = useState([]);
     const [autos, setAutos] = useState([]);
@@ -48,7 +50,7 @@ function Pagos() {
 
     const handleUpdatePago = async () => {
         if (editPago.idAlquiler && editPago.fechaPago && editPago.importe_pago && editPago.metodo_pago) {
-            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado,metodo_pago: editPago.metodo_pago });
+            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado, metodo_pago: editPago.metodo_pago });
             setEditPago(null);
             setModalEditarPago(false);
         } else {
@@ -57,11 +59,43 @@ function Pagos() {
         }
     };
 
+    const pagosFiltrados = placaFiltro
+        ? pagos.filter((pago) => {
+            const auto = autos.find((auto) => auto.id === pago.idAlquiler);
+            return auto?.placa === placaFiltro;
+        })
+        : pagos;
+
+
+    const totalPagosRealizados = pagosFiltrados.reduce(
+        (total, pago) => total + (parseFloat(pago.pago_realizado) || 0),
+        0
+    );
+
     return (
         <div>
             <Container>
                 <br />
                 <Button color="success" onClick={() => setModalInsertarPago(true)}>insertar Pago</Button>
+                <br />
+                <FormGroup>
+                    <label>Filtrar por Placa:</label>
+                    <Input
+                        type="select"
+                        value={placaFiltro}
+                        onChange={(e) => setPlacaFiltro(e.target.value)}
+                    >
+                        <option value="">Todas</option>
+                        {autos.map((auto) => (
+                            <option key={auto.id} value={auto.placa}>{auto.placa}</option>
+                        ))}
+                    </Input>
+                </FormGroup>
+
+                <div>
+                    <strong>Total Pagos Realizados:</strong> S/{totalPagosRealizados.toFixed(2)}
+                </div>
+
                 <br />
                 <Table>
                     <thead>
@@ -74,7 +108,7 @@ function Pagos() {
                         </tr>
                     </thead>
                     <tbody>
-                        {pagos.map((pago) => (
+                        {pagosFiltrados.map((pago) => (
                             <tr key={pago.id}>
                                 <td>{autos.find(auto => auto.id === pago.idAlquiler)?.placa || 'Desconocido'}</td>
                                 <td>{pago.fechaPago}</td>
@@ -96,6 +130,7 @@ function Pagos() {
                             </tr>
                         ))}
                     </tbody>
+
                 </Table>
             </Container>
 
