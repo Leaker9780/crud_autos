@@ -12,8 +12,8 @@ function Alquileres() {
     const [modalOpen, setModalOpen] = useState(false);
 
     const [modalEditarAlquiler, setModalEditarAlquiler] = useState(false);
-  
 
+    const [editAlquiler, setEditAlquiler] = useState(null);
     const [nuevoAlquiler, setNuevoAlquiler] = useState({
         idAuto: '',
         idChofer: '',
@@ -21,11 +21,10 @@ function Alquileres() {
         fechaFin: '',
         importe: '',
         garantia: '',
-        estado: '',
+
     });
 
     useEffect(() => {
-        // Cargar autos, choferes y alquileres
         getAllAutos().then(setAutos);
         getAllChoferes().then(setChoferes);
 
@@ -37,59 +36,74 @@ function Alquileres() {
         if (nuevoAlquiler.idAuto && nuevoAlquiler.idChofer && nuevoAlquiler.fechaInicio) {
             await addAlquiler(nuevoAlquiler);
             setModalOpen(false);
-            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '', importe: '', garantia: '', estado: '' });
+            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '', importe: '', garantia: '' });
         } else {
             alert("Por favor completa todos los campos requeridos.");
         }
     };
 
+    const handleUpdateAlquiler = async () => {
+
+        if (!editAlquiler || !editAlquiler.id) {
+            await updateAlquiler(editAlquiler.id, { idAuto: editAlquiler.idAuto, idChofer: editAlquiler.idChofer, fechaInicio: editAlquiler.fechaInicio, fechaFin: editAlquiler.fechaFin, importe: editAlquiler.importe, garantia: editAlquiler.garantia })
+            setEditAlquiler(null);
+            setModalEditarAlquiler(false);
+        }
+    }
+
     const handleDeleteAlquiler = async (id) => {
         await deleteAlquiler(id);
-      };
-
-    const estadochangue = async () => {
-
     };
+
 
     return (
         <div>
-          <Container>
-            <br/>
+            <Container>
+                <br />
                 <Button color="success" onClick={() => setModalOpen(true)}>insertar Alquiler</Button>
-            <br/>
-            <Table>
-                <thead>
-                    <tr>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Auto</th>
-                    <th>Chofer</th>
-                    <th>Importe de alquiler</th>
-                    <th>Garantia</th>
-                    <th>Estado</th>   
-                    </tr>
-                </thead>
-                <tbody>
-                    {alquileres.map((alquiler) => (
-                        <tr key={alquiler.id}>
-                            <td>{alquiler.fechaInicio}</td>
-                            <td>{alquiler.fechaFin || 'Activo'}</td>
-                            <td>{autos.find(auto => auto.id === alquiler.idAuto)?.placa || 'Desconocido'}</td>
-                            <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.Nombre || 'Desconocido'}</td>
-                            <td>{alquiler.importe}</td> 
-                            <td>{alquiler.garantia}</td>
-                            <td>{alquiler.estado}</td>   
-                            <td>
-                            <Button color='primary' onClick={() => estadochangue(alquiler)}>Cambiar estado</Button>
-                            <Button color='primary' onClick={() => setModalEditarAlquiler(true)}>Editar</Button>
-                            <Button color="danger" onClick={() => handleDeleteAlquiler(alquiler.id)}>Eliminar</Button>
-                            </td>
+                <br />
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Auto</th>
+                            <th>Chofer</th>
+                            <th>Importe de alquiler</th>
+                            <th>Garantia</th>
+
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {alquileres.map((alquiler) => (
+                            <tr key={alquiler.id}>
+                                <td>{alquiler.fechaInicio}</td>
+                                <td>{alquiler.fechaFin || 'Activo'}</td>
+                                <td>{autos.find(auto => auto.id === alquiler.idAuto)?.placa || 'Desconocido'}</td>
+                                <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.Nombre || 'Desconocido'}</td>
+                                <td>{alquiler.importe}</td>
+                                <td>{alquiler.garantia}</td>
+
+                                <td>
+
+                                    <Button
+                                        color="primary"
+                                        onClick={() => {
+                                            setEditAlquiler(alquiler);
+                                            setModalEditarAlquiler(true);
+                                        }}
+                                    >
+                                        Editar
+                                    </Button>
+
+                                    <Button color="danger" onClick={() => handleDeleteAlquiler(alquiler.id)}>Eliminar</Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             </Container>
-            
+
             <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)}>
                 <ModalHeader toggle={() => setModalOpen(!modalOpen)}>Añadir Alquiler</ModalHeader>
                 <ModalBody>
@@ -144,7 +158,7 @@ function Alquileres() {
                             onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, importe: e.target.value })}
                         />
                     </FormGroup>
-                    
+
                     <FormGroup>
                         <label>Garantia:</label>
                         <Input
@@ -154,19 +168,7 @@ function Alquileres() {
                         />
                     </FormGroup>
 
-                    <FormGroup>
-                        <label>Estado:</label>
-                        <Input
-                            type="select"
-                            value={nuevoAlquiler.estado}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, estado: e.target.value })}
-                            >
-                            <option value="">Seleccionar</option>
-                            {choferes.map((chofer) => (
-                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
-                            ))}
-                        </Input>
-                    </FormGroup>
+
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={handleAddAlquiler}>Guardar</Button>
@@ -183,8 +185,8 @@ function Alquileres() {
                         <label>Auto:</label>
                         <Input
                             type="select"
-                            value={nuevoAlquiler.idAuto}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, idAuto: e.target.value })}
+                            value={editAlquiler?.idAuto}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, idAuto: e.target.value })}
                         >
                             <option value="">Seleccionar</option>
                             {autos.map((auto) => (
@@ -196,8 +198,8 @@ function Alquileres() {
                         <label>Chofer:</label>
                         <Input
                             type="select"
-                            value={nuevoAlquiler.idChofer}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, idChofer: e.target.value })}
+                            value={editAlquiler?.idChofer}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, idChofer: e.target.value })}
                         >
                             <option value="">Seleccionar</option>
                             {choferes.map((chofer) => (
@@ -209,16 +211,16 @@ function Alquileres() {
                         <label>Fecha de Inicio:</label>
                         <Input
                             type="date"
-                            value={nuevoAlquiler.fechaInicio}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, fechaInicio: e.target.value })}
+                            value={editAlquiler?.fechaInicio}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, fechaInicio: e.target.value })}
                         />
                     </FormGroup>
                     <FormGroup>
                         <label>Fecha de Fin:</label>
                         <Input
                             type="date"
-                            value={nuevoAlquiler.fechaFin}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, fechaFin: e.target.value })}
+                            value={editAlquiler?.fechaFin}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, fechaFin: e.target.value })}
                         />
                     </FormGroup>
 
@@ -226,36 +228,24 @@ function Alquileres() {
                         <label>Importe de alquiler:</label>
                         <Input
                             type="number"
-                            value={nuevoAlquiler.importe}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, importe: e.target.value })}
-                        />
-                    </FormGroup>
-                    
-                    <FormGroup>
-                        <label>Garantia:</label>
-                        <Input
-                            type="number"
-                            value={nuevoAlquiler.garantia}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, garantia: e.target.value })}
+                            value={editAlquiler?.importe}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, importe: e.target.value })}
                         />
                     </FormGroup>
 
                     <FormGroup>
-                        <label>Estado:</label>
+                        <label>Garantia:</label>
                         <Input
-                            type="select"
-                            value={nuevoAlquiler.estado}
-                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, estado: e.target.value })}
-                            >
-                            <option value="">Seleccionar</option>
-                            {choferes.map((chofer) => (
-                                <option key={chofer.id} value={chofer.id}>{chofer.Nombre}</option>
-                            ))}
-                        </Input>
+                            type="number"
+                            value={editAlquiler?.garantia}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, garantia: e.target.value })}
+                        />
                     </FormGroup>
+
+
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={handleAddAlquiler}>Guardar</Button>
+                    <Button color="primary" onClick={handleUpdateAlquiler}>Actualizar</Button>
                     <Button color="secondary" onClick={() => setModalEditarAlquiler(false)}>Cancelar</Button>
                 </ModalFooter>
             </Modal>

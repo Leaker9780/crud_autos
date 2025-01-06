@@ -226,10 +226,7 @@ function Choferes() {
           </ModalHeader>
 
           <ModalBody>
-            <FormGroup>
-              <label>Id:</label>
-              <input className='form-control' readOnly type="text" value={editChofer?.id || ''} />
-            </FormGroup>
+            
 
             <FormGroup>
               <label>DNI:</label>
@@ -270,6 +267,7 @@ function Choferes() {
                 className="form-control"
                 name="direccion"
                 type="text"
+                value={editChofer?.direccion || ''}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -303,6 +301,7 @@ function Choferes() {
                 className="form-control"
                 name="comentario"
                 type="text"
+                value={editChofer?.comentario || ''}
                 onChange={handleChange}
               />
             </FormGroup>

@@ -128,10 +128,7 @@ const handleDeleteAutos = async (id) => {
           </ModalHeader>
 
           <ModalBody>
-            <FormGroup>
-              <label>Id:</label>
-              <input className='form-control' readOnly type="text" value={editAuto?.id || ''} />
-            </FormGroup>
+           
 
             <FormGroup>
               <label>Placa:</label>
@@ -248,7 +245,6 @@ const handleDeleteAutos = async (id) => {
                 className="form-control"
                 name="modelo"
                 type="text"
-                value={editAuto?.modelo || ''}
                 onChange={handleChange}
               />
             </FormGroup>
