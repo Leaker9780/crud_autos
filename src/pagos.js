@@ -9,6 +9,7 @@ import './App.css';
 function Pagos() {
 
     const [placaFiltro, setPlacaFiltro] = useState('');
+    const [mesFiltro, setMesFiltro] = useState('');
 
     const [pagos, setPagos] = useState([]);
     const [alquileres, setAlquileres] = useState([]);
@@ -47,6 +48,11 @@ function Pagos() {
         }
     };
 
+    const obtenerMes = (fecha) => {
+        const fechaObj = new Date(fecha);
+        return fechaObj.getMonth(); 
+    };
+
     const handleDeletePago = async (id) => {
         await deletePagos(id);
     };
@@ -62,12 +68,15 @@ function Pagos() {
         }
     };
 
-    const pagosFiltrados = placaFiltro
-        ? pagos.filter((pago) => {
-            const auto = autos.find((auto) => auto.id === pago.idAlquiler);
-            return auto?.placa === placaFiltro;
-        })
-        : pagos;
+    const pagosFiltrados = pagos.filter((pago) => {
+        const auto = autos.find((auto) => auto.id === pago.idAlquiler);
+        const mesPago = obtenerMes(pago.fechaPago);
+
+        const filtroPlaca = placaFiltro ? auto?.placa === placaFiltro : true;
+        const filtroMes = mesFiltro !== '' ? mesPago === parseInt(mesFiltro) : true;
+
+        return filtroPlaca && filtroMes;
+    });
 
 
     const totalPagosRealizados = pagosFiltrados.reduce(
@@ -124,6 +133,20 @@ function Pagos() {
                         <option value="">Todas</option>
                         {autos.map((auto) => (
                             <option key={auto.id} value={auto.placa}>{auto.placa}</option>
+                        ))}
+                    </Input>
+                </FormGroup>
+
+                <FormGroup>
+                    <label>Filtrar por Mes:</label>
+                    <Input
+                        type="select"
+                        value={mesFiltro}
+                        onChange={(e) => setMesFiltro(e.target.value)}
+                    >
+                        <option value="">Todos</option>
+                        {['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map((mes, index) => (
+                            <option key={index} value={index}>{mes}</option>
                         ))}
                     </Input>
                 </FormGroup>
