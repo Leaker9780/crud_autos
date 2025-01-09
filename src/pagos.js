@@ -20,11 +20,12 @@ function Pagos() {
     const [nuevoPago, setNuevoPago] = useState({
         idAlquiler: '',
         fechaPago: '',
-        diaPago:'',
-        comentario:'',
+        diaPago: '',
+        comentario: '',
         importe_pago: '',
         pago_realizado: '',
         metodo_pago: '',
+        kilometraje: '',
     });
     const [editPago, setEditPago] = useState(null);
 
@@ -40,7 +41,7 @@ function Pagos() {
         if (nuevoPago.idAlquiler && nuevoPago.fechaPago && nuevoPago.importe_pago && nuevoPago.metodo_pago) {
             await addPagos(nuevoPago);
             setModalInsertarPago(false);
-            setNuevoPago({ idAlquiler: '', fechaPago: '',diaPago:'',comentario:'', importe_pago: '', pago_realizado: '', metodo_pago: '' });
+            setNuevoPago({ idAlquiler: '', fechaPago: '', diaPago: '', comentario: '', importe_pago: '', pago_realizado: '', metodo_pago: '', kilometraje: '' });
         } else {
             alert("Por favor completa todos los campos requeridos.");
         }
@@ -52,7 +53,7 @@ function Pagos() {
 
     const handleUpdatePago = async () => {
         if (editPago.idAlquiler && editPago.fechaPago && editPago.importe_pago && editPago.metodo_pago) {
-            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, diaPago: editPago.diaPago, comentario: editPago.comentario, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado, metodo_pago: editPago.metodo_pago });
+            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, diaPago: editPago.diaPago, comentario: editPago.comentario, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado, metodo_pago: editPago.metodo_pago, kilometraje: editPago.kilometraje });
             setEditPago(null);
             setModalEditarPago(false);
         } else {
@@ -74,33 +75,38 @@ function Pagos() {
         0
     );
 
+    const totalDepositosARecibir = pagosFiltrados.reduce(
+        (total, pago) => total + (parseFloat(pago.importe_pago) || 0),
+        0
+    );
+
     const obtenerDiaSemana = (fecha) => {
-        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo'];
+        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
         const fechaObj = new Date(fecha);
         return dias[fechaObj.getDay()];
-      };
+    };
 
-      const handleFechaChange = (e) => {
+    const handleFechaChange = (e) => {
         const fechaSeleccionada = e.target.value;
         const diaCorrespondiente = obtenerDiaSemana(fechaSeleccionada);
-        
+
         setNuevoPago({
-          ...nuevoPago,
-          fechaPago: fechaSeleccionada,
-          diaPago: diaCorrespondiente,
+            ...nuevoPago,
+            fechaPago: fechaSeleccionada,
+            diaPago: diaCorrespondiente,
         });
-      };
+    };
 
-      const handleFechaChangeUpdate = (e) => {
+    const handleFechaChangeUpdate = (e) => {
         const fechaSeleccionada = e.target.value;
         const diaCorrespondiente = obtenerDiaSemana(fechaSeleccionada);
-        
+
         setEditPago({
-          ...editPago,
-          fechaPago: fechaSeleccionada,
-          diaPago: diaCorrespondiente,
+            ...editPago,
+            fechaPago: fechaSeleccionada,
+            diaPago: diaCorrespondiente,
         });
-      };
+    };
 
     return (
         <div>
@@ -126,6 +132,10 @@ function Pagos() {
                     <strong>Total de Depositos Realizados:</strong> S/{totalPagosRealizados.toFixed(2)}
                 </div>
 
+                <div>
+                    <strong>Total de Depositos a Recibir:</strong> S/{totalDepositosARecibir.toFixed(2)}
+                </div>
+
                 <br />
                 <Table>
                     <thead>
@@ -136,8 +146,8 @@ function Pagos() {
                             <th>Comentarios</th>
                             <th>Deposito a Realizar</th>
                             <th>Deposito realizado</th>
-                            <th>metodo de Deposito</th>
-                            
+                            <th>Metodo de Deposito</th>
+                            <th>Kilometraje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,6 +160,7 @@ function Pagos() {
                                 <td>{'S/' + pago.importe_pago}</td>
                                 <td>{'S/' + pago.pago_realizado}</td>
                                 <td>{pago.metodo_pago}</td>
+                                <td>{pago.kilometraje}</td>
                                 <td>
                                     <Button
                                         color='primary'
@@ -199,7 +210,7 @@ function Pagos() {
                             type='text'
                             value={nuevoPago.diaPago}
                             readOnly
-                            
+
                         />
                     </FormGroup>
                     <FormGroup>
@@ -207,7 +218,7 @@ function Pagos() {
                         <Input
                             type='text'
                             value={nuevoPago.comentario}
-                            onChange={(e) => setNuevoPago({...nuevoPago, comentario: e.target.value})}
+                            onChange={(e) => setNuevoPago({ ...nuevoPago, comentario: e.target.value })}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -235,6 +246,14 @@ function Pagos() {
                         />
                     </FormGroup>
 
+                    <FormGroup>
+                        <label>Kilometraje Recorrido:</label>
+                        <Input
+                            type="number"
+                            value={nuevoPago.kilometraje || ''}
+                            onChange={(e) => setNuevoPago({ ...nuevoPago, kilometraje: e.target.value })}
+                        />
+                    </FormGroup>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={handleAddPago}>Guardar</Button>
@@ -273,7 +292,7 @@ function Pagos() {
                             type='text'
                             value={editPago?.diaPago || ''}
                             readOnly
-                            
+
                         />
                     </FormGroup>
                     <FormGroup>
@@ -281,7 +300,7 @@ function Pagos() {
                         <Input
                             type='text'
                             value={editPago?.comentario}
-                            onChange={(e) => setEditPago({...editPago, comentario: e.target.value})}
+                            onChange={(e) => setEditPago({ ...editPago, comentario: e.target.value })}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -308,6 +327,15 @@ function Pagos() {
                             onChange={(e) => setEditPago({ ...editPago, metodo_pago: e.target.value })}
                         />
                     </FormGroup>
+
+                    <FormGroup>
+    <label>Kilometraje Recorrido:</label>
+    <Input
+        type="number"
+        value={editPago?.kilometraje || ''}
+        onChange={(e) => setEditPago({ ...editPago, kilometraje: e.target.value })}
+    />
+</FormGroup>
 
                 </ModalBody>
                 <ModalFooter>
