@@ -20,6 +20,8 @@ function Pagos() {
     const [nuevoPago, setNuevoPago] = useState({
         idAlquiler: '',
         fechaPago: '',
+        diaPago:'',
+        comentario:'',
         importe_pago: '',
         pago_realizado: '',
         metodo_pago: '',
@@ -38,7 +40,7 @@ function Pagos() {
         if (nuevoPago.idAlquiler && nuevoPago.fechaPago && nuevoPago.importe_pago && nuevoPago.metodo_pago) {
             await addPagos(nuevoPago);
             setModalInsertarPago(false);
-            setNuevoPago({ idAlquiler: '', fechaPago: '', importe_pago: '', pago_realizado: '', metodo_pago: '' });
+            setNuevoPago({ idAlquiler: '', fechaPago: '',diaPago:'',comentario:'', importe_pago: '', pago_realizado: '', metodo_pago: '' });
         } else {
             alert("Por favor completa todos los campos requeridos.");
         }
@@ -50,7 +52,7 @@ function Pagos() {
 
     const handleUpdatePago = async () => {
         if (editPago.idAlquiler && editPago.fechaPago && editPago.importe_pago && editPago.metodo_pago) {
-            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado, metodo_pago: editPago.metodo_pago });
+            await updatePagos(editPago.id, { idAlquiler: editPago.idAlquiler, fechaPago: editPago.fechaPago, diaPago: editPago.diaPago, comentario: editPago.comentario, importe_pago: editPago.importe_pago, pago_realizado: editPago.pago_realizado, metodo_pago: editPago.metodo_pago });
             setEditPago(null);
             setModalEditarPago(false);
         } else {
@@ -72,11 +74,39 @@ function Pagos() {
         0
     );
 
+    const obtenerDiaSemana = (fecha) => {
+        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo'];
+        const fechaObj = new Date(fecha);
+        return dias[fechaObj.getDay()];
+      };
+
+      const handleFechaChange = (e) => {
+        const fechaSeleccionada = e.target.value;
+        const diaCorrespondiente = obtenerDiaSemana(fechaSeleccionada);
+        
+        setNuevoPago({
+          ...nuevoPago,
+          fechaPago: fechaSeleccionada,
+          diaPago: diaCorrespondiente,
+        });
+      };
+
+      const handleFechaChangeUpdate = (e) => {
+        const fechaSeleccionada = e.target.value;
+        const diaCorrespondiente = obtenerDiaSemana(fechaSeleccionada);
+        
+        setEditPago({
+          ...editPago,
+          fechaPago: fechaSeleccionada,
+          diaPago: diaCorrespondiente,
+        });
+      };
+
     return (
         <div>
             <Container>
                 <br />
-                <Button color="success" onClick={() => setModalInsertarPago(true)}>insertar Pago</Button>
+                <Button color="success" onClick={() => setModalInsertarPago(true)}>insertar Deposito</Button>
                 <br />
                 <FormGroup>
                     <label>Filtrar por Placa:</label>
@@ -93,7 +123,7 @@ function Pagos() {
                 </FormGroup>
 
                 <div>
-                    <strong>Total Pagos Realizados:</strong> S/{totalPagosRealizados.toFixed(2)}
+                    <strong>Total de Depositos Realizados:</strong> S/{totalPagosRealizados.toFixed(2)}
                 </div>
 
                 <br />
@@ -101,10 +131,13 @@ function Pagos() {
                     <thead>
                         <tr>
                             <th>Auto alquilado</th>
-                            <th>Fecha de pago</th>
-                            <th>Pago a Realizar</th>
-                            <th>Pago realizado</th>
-                            <th>metodo de pago</th>
+                            <th>Fecha de Deposito</th>
+                            <th>Dia del Deposito</th>
+                            <th>Comentarios</th>
+                            <th>Deposito a Realizar</th>
+                            <th>Deposito realizado</th>
+                            <th>metodo de Deposito</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -112,8 +145,10 @@ function Pagos() {
                             <tr key={pago.id}>
                                 <td>{autos.find(auto => auto.id === pago.idAlquiler)?.placa || 'Desconocido'}</td>
                                 <td>{pago.fechaPago}</td>
-                                <td>{pago.importe_pago}</td>
-                                <td>{pago.pago_realizado}</td>
+                                <td>{pago.diaPago}</td>
+                                <td>{pago.comentario}</td>
+                                <td>{'S/' + pago.importe_pago}</td>
+                                <td>{'S/' + pago.pago_realizado}</td>
                                 <td>{pago.metodo_pago}</td>
                                 <td>
                                     <Button
@@ -151,15 +186,32 @@ function Pagos() {
                         </Input>
                     </FormGroup>
                     <FormGroup>
-                        <label>Fecha de Pago:</label>
+                        <label>Fecha de Deposito:</label>
                         <Input
                             type="date"
                             value={nuevoPago.fechaPago}
-                            onChange={(e) => setNuevoPago({ ...nuevoPago, fechaPago: e.target.value })}
+                            onChange={handleFechaChange}
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Pago a Realizar:</label>
+                        <label>Dia del Deposito</label>
+                        <Input
+                            type='text'
+                            value={nuevoPago.diaPago}
+                            readOnly
+                            
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Comentario</label>
+                        <Input
+                            type='text'
+                            value={nuevoPago.comentario}
+                            onChange={(e) => setNuevoPago({...nuevoPago, comentario: e.target.value})}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Deposito a Realizar:</label>
                         <Input
                             type="number"
                             value={nuevoPago.importe_pago}
@@ -167,7 +219,7 @@ function Pagos() {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Pago Realizado:</label>
+                        <label>Deposito Realizado:</label>
                         <Input
                             type="number"
                             value={nuevoPago.pago_realizado}
@@ -175,7 +227,7 @@ function Pagos() {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Metodo de pago:</label>
+                        <label>Metodo de Deposito:</label>
                         <Input
                             type="text"
                             value={nuevoPago.metodo_pago}
@@ -208,15 +260,32 @@ function Pagos() {
                         </Input>
                     </FormGroup>
                     <FormGroup>
-                        <label>Fecha de Pago:</label>
+                        <label>Fecha de Deposito:</label>
                         <Input
                             type="date"
                             value={editPago?.fechaPago || ''}
-                            onChange={(e) => setEditPago({ ...editPago, fechaPago: e.target.value })}
+                            onChange={handleFechaChangeUpdate}
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Importe de pago:</label>
+                        <label>Dia del Deposito</label>
+                        <Input
+                            type='text'
+                            value={editPago?.diaPago || ''}
+                            readOnly
+                            
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Comentario</label>
+                        <Input
+                            type='text'
+                            value={editPago?.comentario}
+                            onChange={(e) => setEditPago({...editPago, comentario: e.target.value})}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Deposito a Realizar:</label>
                         <Input
                             type="number"
                             value={editPago?.importe_pago || ''}
@@ -224,7 +293,7 @@ function Pagos() {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Pago Realizado:</label>
+                        <label>Deposito Realizado:</label>
                         <Input
                             type="number"
                             value={editPago?.pago_realizado || ''}
@@ -232,7 +301,7 @@ function Pagos() {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label>Metodo de pago:</label>
+                        <label>Metodo de Deposito:</label>
                         <Input
                             type="text"
                             value={editPago?.metodo_pago || ''}

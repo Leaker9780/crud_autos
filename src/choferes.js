@@ -97,7 +97,7 @@ function Choferes() {
                 <th>Telefono</th>
                 <th>Direccion</th>
                 <th>Razon social</th>
-                <th>Carnet de conducir</th>
+                <th>Licencia</th>
                 <th>Comentario</th>
               </tr>
             </thead>
@@ -189,7 +189,7 @@ function Choferes() {
             </FormGroup>
 
             <FormGroup>
-              <label>Carnet de conducir:</label>
+              <label>Licencia:</label>
               <Input
                 className="form-control"
                 name="carnet_conducir"
@@ -285,7 +285,7 @@ function Choferes() {
             </FormGroup>
 
             <FormGroup>
-              <label>Carnet de conducir:</label>
+              <label>Licencia:</label>
               <Input
                 className="form-control"
                 name="carnet_conducir"

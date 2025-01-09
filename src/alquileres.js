@@ -21,7 +21,7 @@ function Alquileres() {
         fechaFin: '',
         importe: '',
         garantia: '',
-
+        comentarios: '',
     });
 
     useEffect(() => {
@@ -36,7 +36,7 @@ function Alquileres() {
         if (nuevoAlquiler.idAuto && nuevoAlquiler.idChofer && nuevoAlquiler.fechaInicio) {
             await addAlquiler(nuevoAlquiler);
             setModalOpen(false);
-            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '', importe: '', garantia: '' });
+            setNuevoAlquiler({ idAuto: '', idChofer: '', fechaInicio: '', fechaFin: '', importe: '', garantia: '', comentarios: '' });
         } else {
             alert("Por favor completa todos los campos requeridos.");
         }
@@ -45,7 +45,7 @@ function Alquileres() {
     const handleUpdateAlquiler = async () => {
 
         if (!editAlquiler || !editAlquiler.id) {
-            await updateAlquiler(editAlquiler.id, { idAuto: editAlquiler.idAuto, idChofer: editAlquiler.idChofer, fechaInicio: editAlquiler.fechaInicio, fechaFin: editAlquiler.fechaFin, importe: editAlquiler.importe, garantia: editAlquiler.garantia })
+            await updateAlquiler(editAlquiler.id, { idAuto: editAlquiler.idAuto, idChofer: editAlquiler.idChofer, fechaInicio: editAlquiler.fechaInicio, fechaFin: editAlquiler.fechaFin, importe: editAlquiler.importe, garantia: editAlquiler.garantia, comentarios: editAlquiler.comentarios });
             setEditAlquiler(null);
             setModalEditarAlquiler(false);
         }
@@ -71,7 +71,7 @@ function Alquileres() {
                             <th>Chofer</th>
                             <th>Importe de alquiler</th>
                             <th>Garantia</th>
-
+                            <th>Comentarios</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,9 +81,9 @@ function Alquileres() {
                                 <td>{alquiler.fechaFin || 'Activo'}</td>
                                 <td>{autos.find(auto => auto.id === alquiler.idAuto)?.placa || 'Desconocido'}</td>
                                 <td>{choferes.find(chofer => chofer.id === alquiler.idChofer)?.Nombre || 'Desconocido'}</td>
-                                <td>{alquiler.importe}</td>
-                                <td>{alquiler.garantia}</td>
-
+                                <td>{'S/' + alquiler.importe}</td>
+                                <td>{'S/' + alquiler.garantia}</td>
+                                <td>{alquiler.comentarios}</td>
                                 <td>
 
                                     <Button
@@ -167,7 +167,15 @@ function Alquileres() {
                             onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, garantia: e.target.value })}
                         />
                     </FormGroup>
-
+                    
+                    <FormGroup>
+                        <label>Comentarios:</label>
+                        <Input
+                            type="text"
+                            value={nuevoAlquiler.comentarios}
+                            onChange={(e) => setNuevoAlquiler({ ...nuevoAlquiler, comentarios: e.target.value })}
+                        />
+                    </FormGroup>
 
                 </ModalBody>
                 <ModalFooter>
@@ -241,7 +249,15 @@ function Alquileres() {
                             onChange={(e) => setEditAlquiler({ ...editAlquiler, garantia: e.target.value })}
                         />
                     </FormGroup>
-
+                    
+                    <FormGroup>
+                        <label>Comentarios:</label>
+                        <Input
+                            type="text"
+                            value={editAlquiler?.comentarios}
+                            onChange={(e) => setEditAlquiler({ ...editAlquiler, comentarios: e.target.value })}
+                        />
+                    </FormGroup>
 
                 </ModalBody>
                 <ModalFooter>

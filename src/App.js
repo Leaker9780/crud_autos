@@ -38,7 +38,7 @@ function App() {
               <Nav.Link as={Link} to='/autos'>Autos</Nav.Link>
               <Nav.Link as={Link} to='/choferes'>Choferes</Nav.Link>
               <Nav.Link as={Link} to='/alquileres'>Alquileres</Nav.Link>
-              <Nav.Link as={Link} to='/pagos'>Pagos</Nav.Link>
+              <Nav.Link as={Link} to='/pagos'>Depositos</Nav.Link>
             </Nav>
             <button onClick={toggleDarkMode} className="btn btn-outline-secondary">
               {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
